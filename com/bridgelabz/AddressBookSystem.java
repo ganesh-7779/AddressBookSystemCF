@@ -47,7 +47,7 @@ public class AddressBookSystem {
     }
     /*
      * UC3
-     * Ability to edit existing contact of person using there first name 
+     * Ability to edit existing contact of person using there first name
      */
     private void editContact(){
         String enterName;
@@ -99,20 +99,40 @@ public class AddressBookSystem {
             }
         }
     }
+    /**
+     * UC4
+     * This method removes person from list using  first name.
+     */
+    private void deletePerson (){
+        String enteredName;
+        System.out.println("Enter First name of contact to delete it ");
+         enteredName=sc.next();
+        for(int i=0;i<personList.size();i++)
+        {
+            if(personList.get(i).getFirstName().equals(enteredName))
+                personList.remove(i);
+        }
+        System.out.println("Person removed from Address book");
+
+    }
     public static void main(String[] args) {
         System.out.println("Welcome to Address Book Program");
-        AddressBookSystem Contact = new AddressBookSystem();
+        AddressBookSystem contact = new AddressBookSystem();
         boolean isExit = false;
         while (!isExit) {
-            System.out.println("Enter your choice \n1.Add New Contact\n2.Edit Contact\n3.Exit");
+            System.out.println("Enter your choice \n1.Add New Contact\n2.Edit Contact\n3.Delete Contact\n4.Exit");
             int choice = sc.nextInt();
             switch (choice) {
                 case 1:
-                    Contact.addNewContact();
+                    contact.addNewContact();
                     break;
                 case 2:
-                   Contact.editContact();
+                   contact.editContact();
+                   break;
                 case 3:
+                    contact.deletePerson();
+                    break;
+                case 4:
                     isExit = true;
                     break;
                 default:
