@@ -1,7 +1,8 @@
 /**********************************************************************************
- * Purpose : Implementation Of Address Book System Program Using hashMap or ArrayList
+ * Purpose : Implementation Of Address Book System Program Using hashMap,ArrayList and Stream
  * @author Ganesh Gavad
  * @version 1.0;
+ * @since 31.7.21
  **********************************************************************************/
 package com.bridgelabz;
 
@@ -22,41 +23,44 @@ public class AddressBookSystem {
      * UC2 this method adds object person and its element to ArrayList
      */
     private void addNewContact() {
-        System.out.println("Which City You Want To Add");
-        city = sc.next();
-        Person person = new Person();
-        System.out.println("Enter First Name");
-        String firstName = sc.next();
-        person.setFirstName(firstName);
-        System.out.println("Enter last Name");
-        String lastName = sc.next();
-        person.setLastName(lastName);
-        System.out.println("Enter the Address");
-        String address = sc.next();
-        person.setAddress(address);
-        System.out.println("Enter the City");
-        String city = sc.next();
-        person.setCity(city);
-        System.out.println("Enter the State");
-        String state = sc.next();
-        person.setState(state);
-        System.out.println("Enter the PinCode");
-        String pinCode = sc.next();
-        person.setPinCode(pinCode);
-        System.out.println("Enter the Phone Number");
-        String phoneNumber = sc.next();
-        person.setPhoneNumber(phoneNumber);
-        System.out.println("Enter the Email");
-        String emailId = sc.next();
-        person.setEmailId(emailId);
+        try {
+            System.out.println("Which City You Want To Add");
+            city = sc.next();
+            Person person = new Person();
+            System.out.println("Enter First Name");
+            String firstName = sc.next();
+            person.setFirstName(firstName);
+            System.out.println("Enter last Name");
+            String lastName = sc.next();
+            person.setLastName(lastName);
+            System.out.println("Enter the Address");
+            String address = sc.next();
+            person.setAddress(address);
+            System.out.println("Enter the City");
+            String city = sc.next();
+            person.setCity(city);
+            System.out.println("Enter the State");
+            String state = sc.next();
+            person.setState(state);
+            System.out.println("Enter the PinCode");
+            String pinCode = sc.next();
+            person.setPinCode(pinCode);
+            System.out.println("Enter the Phone Number");
+            String phoneNumber = sc.next();
+            person.setPhoneNumber(phoneNumber);
+            System.out.println("Enter the Email");
+            String emailId = sc.next();
+            person.setEmailId(emailId);
 
-        if (contactBook.containsKey(city)) {
-            contactBook.get(city).add(person);
-        }
-        else {
-            personList = new ArrayList<>();
-            personList.add(person);
-            contactBook.put(city, personList);
+            if (contactBook.containsKey(city)) {
+                contactBook.get(city).add(person);
+            } else {
+                personList = new ArrayList<>();
+                personList.add(person);
+                contactBook.put(city, personList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     /*
@@ -124,16 +128,19 @@ public class AddressBookSystem {
      * UC4
      * This method removes person from list using  first name.
      */
-    private void deletePerson (){
-        String enteredName;
-        System.out.println("Enter First name of contact to delete it ");
-         enteredName=sc.next();
-        for(int i=0;i<contactBook.get(city).size();i++)
-        {
-            if(contactBook.get(city).get(i).getFirstName().equals(enteredName))
-                contactBook.get(city).remove(i);
+    private void deletePerson () {
+        try {
+            String enteredName;
+            System.out.println("Enter First name of contact to delete it ");
+            enteredName = sc.next();
+            for (int i = 0; i < contactBook.get(city).size(); i++) {
+                if (contactBook.get(city).get(i).getFirstName().equals(enteredName))
+                    contactBook.get(city).remove(i);
+            }
+            System.out.println("Person removed from Address book");
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        System.out.println("Person removed from Address book");
     }
     /*
      *UC5
@@ -149,66 +156,102 @@ public class AddressBookSystem {
      * for loop iterates over all key
      * use of stream to search person by using filter method of stream
      */
-    private void searchPersonInCity(){
-        System.out.println("Enter name to search in all book");
-        String nameToSearch =sc.next();
-        for(String key : contactBook.keySet()){
-            contactBook.get(key).stream().filter(person -> person.getFirstName().equals(nameToSearch)).
-                    collect(Collectors.toList()).forEach(Person-> System.out.println(Person.toString()));
+    private void searchPersonInCity() {
+        try {
+            System.out.println("Enter name to search in all book");
+            String nameToSearch = sc.next();
+            for (String key : contactBook.keySet()) {
+                contactBook.get(key).stream().filter(person -> person.getFirstName().equals(nameToSearch)).
+                        collect(Collectors.toList()).forEach(Person -> System.out.println(Person.toString()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-
     /**
      *UC 9 : ability to view person by city, get city name by user input
      * using hashmap and key value is city name, if hashmap contain that user input
      * city as key it will display all contact in list using stream
      * else display city not found
      **/
-    private void viewPersonByCity(){
-        System.out.println("Enter Name Of city to find all person contact ");
-        String cityNameToSearchAllPerson = sc.next();
-        if(contactBook.containsKey(cityNameToSearchAllPerson)){
-            contactBook.get(cityNameToSearchAllPerson).stream().
-                    forEach(person -> System.out.println(person.toString()));
-        } else {
-            System.out.println("City not Found");
+    private void viewPersonByCity() {
+        try {
+            System.out.println("Enter Name Of city to find all person contact ");
+            String cityName = sc.next();
+            if (contactBook.containsKey(cityName)) {
+                contactBook.get(cityName).stream().
+                        forEach(person -> System.out.println(person.toString()));
+            } else {
+                System.out.println("City not Found");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *UC 10 : ability to get number of person by city, get city name by user input
+     * using hashmap and key value is city name, if hashmap contain that user input
+     * city as key it will collect all contact in stream and by using count method,
+     * here i have used count long variable to print result.
+     * else display city not found
+     **/
+    private void CountPersonByCity() {
+        try {
+            System.out.println("Enter Name Of city to find Number Of person contact ");
+            String cityName = sc.next();
+            if (contactBook.containsKey(cityName)) {
+                long count = contactBook.get(cityName).stream().count();
+                System.out.println(count);
+            } else {
+                System.out.println("City not Found");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        System.out.println("Welcome to Address Book Program");
-        AddressBookSystem contact = new AddressBookSystem();
-        boolean isExit = false;
-        while (!isExit) {
-            System.out.println("Enter your choice \n1.Add New Contact\n2.Edit Contact\n3.Delete Contact\n4.Show Person Contact" +
-                    "\n5.Search Person\n6.Search By City\n7.Exit");
-            int choice = sc.nextInt();
-            switch (choice) {
-                case 1:
-                    contact.addNewContact();
-                    break;
-                case 2:
-                   contact.editContact();
-                   break;
-                case 3:
-                    contact.deletePerson();
-                    break;
-                case 4:
-                    contact.showPerson();
-                    break;
-                case 5:
-                    contact.searchPersonInCity();
-                    break;
-                case 6:
-                    contact.viewPersonByCity();
-                    break;
-                case 7:
-                    isExit = true;
-                    break;
-                default:
-                    System.out.println("Invalid Input");
-                    break;
+        try {
+            System.out.println("Welcome to Address Book Program");
+            AddressBookSystem contact = new AddressBookSystem();
+            boolean isExit = false;
+            while (!isExit) {
+                System.out.println("Enter your choice \n1.Add New Contact\n2.Edit Contact\n3.Delete Contact\n4.Show Person Contact" +
+                        "\n5.Search Person\n6.Search By City\n7 Count Person By city \n8.Exit");
+                int choice = sc.nextInt();
+                switch (choice) {
+                    case 1:
+                        contact.addNewContact();
+                        break;
+                    case 2:
+                        contact.editContact();
+                        break;
+                    case 3:
+                        contact.deletePerson();
+                        break;
+                    case 4:
+                        contact.showPerson();
+                        break;
+                    case 5:
+                        contact.searchPersonInCity();
+                        break;
+                    case 6:
+                        contact.viewPersonByCity();
+                        break;
+                    case 7:
+                        contact.CountPersonByCity();
+                        break;
+                    case 8:
+                        isExit = true;
+                        break;
+                    default:
+                        System.out.println("Invalid Input");
+                        break;
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
