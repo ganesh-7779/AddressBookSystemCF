@@ -210,6 +210,19 @@ public class AddressBookSystem {
             e.printStackTrace();
         }
     }
+    /**
+     * UC11 Sort by First name in Alphabetical order
+     */
+    private void sortByPersonFirstName() {
+        try {
+            for (String key : contactBook.keySet()) {
+                contactBook.get(key).stream().sorted(Comparator.comparing(Person::getFirstName)).collect(Collectors.toList()).
+                        forEach(Person-> System.out.println(Person.toString()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         try {
@@ -218,7 +231,7 @@ public class AddressBookSystem {
             boolean isExit = false;
             while (!isExit) {
                 System.out.println("Enter your choice \n1.Add New Contact\n2.Edit Contact\n3.Delete Contact\n4.Show Person Contact" +
-                        "\n5.Search Person\n6.Search By City\n7 Count Person By city \n8.Exit");
+                        "\n5.Search Person\n6.Search By City\n7 Count Person By city\n8.Sort By Person Name \n9.Exit");
                 int choice = sc.nextInt();
                 switch (choice) {
                     case 1:
@@ -243,6 +256,8 @@ public class AddressBookSystem {
                         contact.CountPersonByCity();
                         break;
                     case 8:
+                        contact.sortByPersonFirstName();
+                    case 9:
                         isExit = true;
                         break;
                     default:
