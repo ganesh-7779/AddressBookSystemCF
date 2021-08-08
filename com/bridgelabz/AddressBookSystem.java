@@ -1,16 +1,14 @@
-/**********************************************************************************
+/*********************************************************************************************
  * Purpose : Implementation Of Address Book System Program Using hashMap,ArrayList and Stream
  * @author Ganesh Gavad
  * @version 1.0;
- * @since 31.7.21
- **********************************************************************************/
+ * @since 31.07.21
+ *******************************************************************************************/
 package com.bridgelabz;
 
-import org.w3c.dom.ls.LSOutput;
-
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
-
 
 public class AddressBookSystem {
     static Scanner sc = new Scanner(System.in);
@@ -78,7 +76,8 @@ public class AddressBookSystem {
                 if (contactBook.get(city).get(i).equals(enterName)) ;
                 {
                     System.out.println("Person Found, Enter option that you want to edit");
-                    System.out.println("Enter\n1.First Name\n2.Last Name\n3.Address\n4.city\n5.State\n6.Pin Code\n7.Phone Number\n8.EmailId");
+                    System.out.println("Enter\n1.First Name\n2.Last Name\n3.Address\n4.city" +
+                            "\n5.State\n6.Pin Code\n7.Phone Number\n8.EmailId");
                     int check;
                     check = sc.nextInt();
                     switch (check) {
@@ -119,8 +118,8 @@ public class AddressBookSystem {
                     }
                 }
             }
-        } catch (NullPointerException exception) {
-           exception.getStackTrace();
+        } catch ( Exception e) {
+           e.getStackTrace();
         }
     }
 
@@ -238,6 +237,50 @@ public class AddressBookSystem {
         }
     }
 
+    /**
+     * UC13 Write to file
+     * Purpose : Writes contact book to file Person.txt
+     * @throws IOException
+     */
+    private void writeToFile() throws IOException {
+
+        FileOutputStream writeData = new FileOutputStream("Person.txt");
+        ObjectOutputStream ObjectStream = new ObjectOutputStream(writeData);
+
+        try {
+            ObjectStream.writeObject(contactBook);
+            ObjectStream.flush();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            ObjectStream.close();
+        }
+    }
+
+    /**
+     * Reads objects from file
+     * Prints them on console
+     * @throws IOException
+     */
+    private void readFromFile() throws IOException {
+
+        FileInputStream writeData = new FileInputStream("Person.txt");
+        ObjectInputStream ObjectStream = new ObjectInputStream(writeData);
+
+        try {
+            Map<String ,ArrayList<Person>> newContactBook = (Map<String, ArrayList<Person>>) ObjectStream.readObject();
+            System.out.println(newContactBook);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            ObjectStream.close();
+        }
+    }
+
     public static void main(String[] args) {
         try {
             System.out.println("Welcome to Address Book Program");
@@ -246,7 +289,7 @@ public class AddressBookSystem {
             while (!isExit) {
                 System.out.println("Enter your choice \n1.Add New Contact\n2.Edit Contact\n3.Delete Contact" +
                         "\n4.Show Person Contact\n5.Search Person\n6.Search By City\n7 Count Person By city" +
-                        "\n8.Sort By Person Name\n9. Sort By City \n10.Exit");
+                        "\n8.Sort By Person Name\n9. Sort By City\n10. Write to file\n11.Read From File\n12.Exit");
                 int choice = sc.nextInt();
                 switch (choice) {
                     case 1:
@@ -277,6 +320,12 @@ public class AddressBookSystem {
                         contact.sortByCity();
                         break;
                     case 10:
+                        contact.writeToFile();
+                        break;
+                    case 11:
+                        contact.readFromFile();
+                        break;
+                    case 12:
                         isExit = true;
                         break;
                     default:
